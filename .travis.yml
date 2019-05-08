@@ -10,7 +10,7 @@ go:
   - 1.11.x
 
 script:
-  - sudo apt-get install -y rpmbuild
+  - sudo apt-get install -y  rpm
 before_install:
   - go mod download
 
