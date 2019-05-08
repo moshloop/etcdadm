@@ -9,6 +9,8 @@ language: go
 go:
   - 1.11.x
 
+script:
+  - sudo apt-get install -y rpmbuild
 before_install:
   - go mod download
 
