@@ -1,4 +1,4 @@
-module github.com/kubernetes-sigs/etcdadm
+module sigs.k8s.io/etcdadm
 
 require (
 	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973 // indirect
