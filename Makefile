@@ -23,6 +23,9 @@ BIN := etcdadm
 PACKAGE_GOPATH := /go/src/sigs.k8s.io/$(BIN)
 LDFLAGS := $(shell source ./version.sh ; KUBE_ROOT=. ; KUBE_GIT_VERSION=${VERSION_OVERRIDE} ; kube::version::ldflags)
 GIT_STORAGE_MOUNT := $(shell source ./git_utils.sh; container_git_storage_mount)
+GITHUB_USER=$(shell basename $(shell dirname $(shell git remote get-url origin | sed 's/\.git//')))
+TAG=$(shell git tag --points-at HEAD )
+
 
 .PHONY: clean container-build default ensure
 
@@ -33,6 +36,14 @@ container-build:
 
 $(BIN):
 	go build -ldflags "$(LDFLAGS)"
+
+
+release: $(BIN)
+	$(shell which github-release 2&> /dev/null || go get github.com/aktau/github-release)
+	$(shell which upx 2&> /dev/null  || sudo apt-get install -y upx-ucl)
+	upx $(BIN)
+	github-release release --user $(GITHUB_USER) --repo $(BIN) --tag $(TAG)
+	github-release upload --user $(GITHUB_USER) --repo $(BIN) --tag $(TAG) --name "$(BIN)" --file "$(BIN)"
 
 clean:
 	rm -f $(BIN)
