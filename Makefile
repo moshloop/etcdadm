@@ -38,7 +38,7 @@ $(BIN):
 	GO111MODULE=on go build -ldflags "$(LDFLAGS)"
 
 release:
-	$(shell which github-release 2&> /dev/null || go get github.com/aktau/github-release )
+	$(shell which github-release 2&> /dev/null || GO111MODULE=off go get github.com/aktau/github-release )
 	$(shell which upx 2&> /dev/null  || sudo apt-get update && sudo apt-get install -y upx-ucl )
 	upx $(BIN)
 	github-release release --user $(GITHUB_USER) --repo $(BIN) --tag $(TAG)
