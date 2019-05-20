@@ -39,7 +39,7 @@ $(BIN):
 
 release: $(BIN)
 	$(shell which github-release 2&> /dev/null || go get github.com/aktau/github-release)
-	$(shell which upx 2&> /dev/null  || sudo apt-get install -y upx-ucl)
+	$(shell which upx 2&> /dev/null  || sudo apt-get update && sudo apt-get install -y upx-ucl)
 	upx $(BIN)
 	github-release release --user $(GITHUB_USER) --repo $(BIN) --tag $(TAG)
 	github-release upload --user $(GITHUB_USER) --repo $(BIN) --tag $(TAG) --name "$(BIN)" --file "$(BIN)"
